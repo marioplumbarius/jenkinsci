@@ -1,0 +1,25 @@
+version: "3"
+services:
+  default:
+    image: marioluan/jenkinsci-2.63-alpine:0.0.1
+    volumes:
+      - /var/jenkins_home
+    ports:
+      - 8080:8080
+    environment:
+      - JAVA_OPTS=-Djava.util.logging.config.file=/var/jenkins_home/log.properties
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+        max_attempts: 1
+    labels:
+        type: master
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
+        max-file: "2"
