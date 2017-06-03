@@ -1,4 +1,5 @@
 # terraform
+Provisions the infrastructure on AWS (Amazon Web Services).
 
 **pre-requisites:**
 - aws credentials file (`~/.aws/credentials`)
