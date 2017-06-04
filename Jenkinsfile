@@ -1,5 +1,10 @@
 pipeline {
   agent any
+
+  parameters {
+      string(name: 'DOCKER_HUB_PASSWORD', defaultValue: '', description: 'DOCKER_HUB_PASSWORD')
+  }
+
   stages {
     stage('git pull') {
       steps {
@@ -19,8 +24,9 @@ pipeline {
     stage('docker login') {
       steps {
         sh '''docker login \
-  --username $DOCKER_HUB_USER \
-  --password $DOCKER_HUB_PASSWD'''
+          --username $DOCKER_HUB_USER \
+          --password ${params.DOCKER_HUB_PASSWORD}
+        '''
       }
     }
     stage('docker push') {
@@ -34,6 +40,5 @@ pipeline {
     DOCKER_IMAGE_NAME = 'marioluan/jenkinsci-2.6.3-alpine'
     DOCKER_IMAGE_TAG = '0.0.1'
     DOCKER_HUB_USER = 'marioluan'
-    DOCKER_HUB_PASSWD = ''
   }
 }
