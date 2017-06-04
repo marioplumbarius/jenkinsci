@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t marioluan/jenkinsci-2.6.3-alpine:latest docker
+
+script:
+  - docker run marioluan/jenkinsci-2.6.3-alpine:latest --version
