@@ -1,5 +1,39 @@
 # docker
-Provisions the docker image locally.
+Provisions a docker service running a single jenkins server.
+
+The setup is based on the official documentation of jenkinsci: [https://github.com/jenkinsci/docker/blob/master/README.md](https://github.com/jenkinsci/docker/blob/master/README.md).
 
 **pre-requisites:**
 - docker (`17.03.1-ce`)
+
+## usage
+
+### enable swarm mode
+```shell
+docker swarm init
+```
+
+### deploy the stack
+```shell
+docker stack deploy -c docker-stack.yml jenkinsci
+```
+
+### access jenkins
+Head over [127.0.0.1:8080](127.0.0.1:8080).
+
+--
+## development
+- generate a new version of the docker image
+    ```shell
+    docker build -t marioluan/jenkinsci-2.63-alpine:latest .
+    docker tag marioluan/jenkinsci-2.63-alpine:latest marioluan/jenkinsci-2.63-alpine:<tag>
+    docker push marioluan/jenkinsci-2.63-alpine:latest
+    docker push marioluan/jenkinsci-2.63-alpine:<tag>
+```
+- update docker-stack.yml with the new version
+```shell
+version: "3"
+services:
+  default:
+    image: marioluan/jenkinsci-2.63-alpine:<tag>
+```
