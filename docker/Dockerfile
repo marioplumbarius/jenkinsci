@@ -6,10 +6,3 @@ COPY var/jenkins_home/log.properties                            var/jenkins_home
 COPY usr/share/jenkins/ref/init.groovy.d/custom.groovy          /usr/share/jenkins/ref/init.groovy.d/custom.groovy
 COPY usr/share/jenkins/ref/init.groovy.d/executors.groovy       /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 COPY usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state  /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
-
-# installs docker
-USER root
-RUN apk --update --no-cache add docker
-
-# go back to jenkins
-USER jenkins
