@@ -20,40 +20,38 @@ pipeline {
         string(name: "DOCKER_CMD_PREFIX",   description: "DOCKER_CMD_PREFIX",   defaultValue: "sudo")
     }
 
-    timestamps {
-        stages {
-            stage("git clone") {
-                steps {
-                    git(url: 'https://github.com/marioluan/jenkinsci.git', branch: 'master', changelog: true)
-                }
-            }
-            stage("docker login") {
-                steps {
-                    sh "${params.DOCKER_CMD_PREFIX} docker login --username ${params.DOCKER_HUB_USER} --password ${params.DOCKER_HUB_PASSWORD}"
-                }
-            }
-            stage("docker build") {
-                steps {
-                    sh "${params.DOCKER_CMD_PREFIX} docker build -t ${params.DOCKER_IMAGE_NAME}:latest docker/"
-                }
-            }
-            stage("docker tag") {
-                steps {
-                    sh "${params.DOCKER_CMD_PREFIX} docker tag ${params.DOCKER_IMAGE_NAME}:latest ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
-                }
-            }
-            stage("docker push") {
-                steps {
-                    sh "${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:latest && ${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
-                }
+    stages {
+        stage("git clone") {
+            steps {
+                git(url: 'https://github.com/marioluan/jenkinsci.git', branch: 'master', changelog: true)
             }
         }
-
-        post {
-            always {
-                echo "cleaning up"
-                deleteDir()
+        stage("docker login") {
+            steps {
+                sh "${params.DOCKER_CMD_PREFIX} docker login --username ${params.DOCKER_HUB_USER} --password ${params.DOCKER_HUB_PASSWORD}"
             }
+        }
+        stage("docker build") {
+            steps {
+                sh "${params.DOCKER_CMD_PREFIX} docker build -t ${params.DOCKER_IMAGE_NAME}:latest docker/"
+            }
+        }
+        stage("docker tag") {
+            steps {
+                sh "${params.DOCKER_CMD_PREFIX} docker tag ${params.DOCKER_IMAGE_NAME}:latest ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
+            }
+        }
+        stage("docker push") {
+            steps {
+                sh "${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:latest && ${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "cleaning up"
+            deleteDir()
         }
     }
 }
