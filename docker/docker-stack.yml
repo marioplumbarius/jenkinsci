@@ -1,7 +1,7 @@
 version: "3"
 services:
   master:
-    image: marioluan/jenkinsci-2.6.3-alpine:0.0.2
+    image: marioluan/jenkinsci-2.6.3-alpine:$DOCKER_IMAGE_TAG
     volumes:
       - var_jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock

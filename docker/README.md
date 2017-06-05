@@ -15,7 +15,7 @@ docker swarm init
 
 ### deploy the stack
 ```shell
-docker stack deploy -c docker-stack.yml jenkinsci
+DOCKER_IMAGE_TAG=<tag> docker stack deploy -c docker-stack.yml jenkinsci
 ```
 
 ### access jenkins
@@ -29,12 +29,4 @@ docker build -t marioluan/jenkinsci-2.6.3-alpine:latest .
 docker tag marioluan/jenkinsci-2.6.3-alpine:latest marioluan/jenkinsci-2.6.3-alpine:<tag>
 docker push marioluan/jenkinsci-2.6.3-alpine:latest
 docker push marioluan/jenkinsci-2.6.3-alpine:<tag>
-```
-    
-- update docker-stack.yml with the new version  
-```shell
-version: "3"
-services:
-  default:
-    image: marioluan/jenkinsci-2.6.3-alpine:<tag>
 ```
