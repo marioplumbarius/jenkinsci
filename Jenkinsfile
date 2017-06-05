@@ -23,7 +23,7 @@ pipeline {
 
     stages {
         stage("clean up") {
-            staps {
+            steps {
                 deleteDir()
             }
         }
@@ -52,6 +52,13 @@ pipeline {
                 sh "${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:latest && ${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
             }
         }
+
+        stage('deploy check') {
+            steps {
+                input "Do you want to deploy?"
+            }
+        }
+
         stage("before-deploy") {
             steps {
                 sh "ssh -i ~/.ssh/terraform centos@172-31-74-91 rm docker-stack.yml"
