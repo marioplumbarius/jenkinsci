@@ -32,7 +32,7 @@ pipeline {
         }
         stage("docker push") {
             steps {
-                sh "${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:latest && docker push ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
+                sh "${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:latest && ${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
             }
         }
     }
