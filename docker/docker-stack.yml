@@ -1,7 +1,7 @@
 version: "3"
 services:
   default:
-    image: marioluan/jenkinsci-2.6.3-alpine:0.0.1
+    image: marioluan/jenkinsci-2.6.3-alpine:0.0.2
     volumes:
       - /var/jenkins_home
     ports:
