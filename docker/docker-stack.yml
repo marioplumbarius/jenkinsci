@@ -1,9 +1,9 @@
 version: "3"
 services:
-  default:
+  master:
     image: marioluan/jenkinsci-2.6.3-alpine:0.0.2
     volumes:
-      - /var/jenkins_home
+      - var_jenkins_home:/var/jenkins_home
     ports:
       - 8080:8080
     environment:
@@ -17,9 +17,11 @@ services:
         condition: on-failure
         max_attempts: 1
     labels:
-        type: master
+      type: master
     logging:
       driver: "json-file"
       options:
         max-size: "100k"
         max-file: "2"
+volumes:
+  var_jenkins_home:
