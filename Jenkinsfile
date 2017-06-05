@@ -11,14 +11,9 @@ pipeline {
     }
 
     stages {
-        stage("clean up") {
-            steps {
-                sh "rm -rf ${params.APP_DIRECTORY} | exit 0"
-            }
-        }
         stage("git clone") {
             steps {
-                sh "git clone https://github.com/marioluan/jenkinsci.git"
+                git(url: 'https://github.com/marioluan/jenkinsci.git', branch: 'master', changelog: true)
             }
         }
         stage("docker login") {
