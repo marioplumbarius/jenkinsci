@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     parameters {
-        string(name: "DOCKER_HUB_PASSWORD", description: "DOCKER_HUB_PASSWORD")
-        string(name: "DOCKER_IMAGE_TAG",    description: "DOCKER_IMAGE_TAG")
-        string(name: "DOCKER_CMD_PREFIX",    description: "DOCKER_CMD_PREFIX",    defaultValue: "sudo")
-        string(name: "DOCKER_IMAGE_NAME",   description: "DOCKER_IMAGE_NAME",   defaultValue: "marioluan/jenkinsci-2.6.3-alpine")
         string(name: "DOCKER_HUB_USER",     description: "DOCKER_HUB_USER",     defaultValue: "marioluan")
+        string(name: "DOCKER_HUB_PASSWORD", description: "DOCKER_HUB_PASSWORD")
+        string(name: "DOCKER_IMAGE_NAME",   description: "DOCKER_IMAGE_NAME",   defaultValue: "marioluan/jenkinsci-2.6.3-alpine")
+        string(name: "DOCKER_IMAGE_TAG",    description: "DOCKER_IMAGE_TAG")
+        string(name: "DOCKER_CMD_PREFIX",   description: "DOCKER_CMD_PREFIX",   defaultValue: "sudo")
     }
 
     stages {
