@@ -1,6 +1,18 @@
 pipeline {
     agent any
 
+    options {
+        timeout(time: 1, unit: 'MINUTES')
+        buildDiscarder(
+            logRotator(
+                artifactNumToKeepStr: '1',
+                numToKeepStr: '1'
+            )
+        )
+        disableConcurrentBuilds()
+        timestamps()
+    }
+
     parameters {
         string(name: "DOCKER_HUB_USER",     description: "DOCKER_HUB_USER",     defaultValue: "marioluan")
         string(name: "DOCKER_HUB_PASSWORD", description: "DOCKER_HUB_PASSWORD")
