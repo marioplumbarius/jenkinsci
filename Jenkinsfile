@@ -7,13 +7,13 @@ pipeline {
         string(name: "DOCKER_CMDPREFIX",    description: "DOCKER_CMDPREFIX",    defaultValue: "sudo")
         string(name: "DOCKER_IMAGE_NAME",   description: "DOCKER_IMAGE_NAME",   defaultValue: "marioluan/jenkinsci-2.6.3-alpine")
         string(name: "DOCKER_HUB_USER",     description: "DOCKER_HUB_USER",     defaultValue: "marioluan")
-        string(name: "JENKINSCI_DIRECTORY", description: "JENKINSCI_DIRECTORY", defaultValue: "jenkinsci")
+        string(name: "APP_DIRECTORY",       description: "APP_DIRECTORY",       defaultValue: "jenkinsci")
     }
 
     stages {
         stage("clean up") {
             steps {
-                sh "rm -rf ${params.JENKINSCI_DIRECTORY} | exit 0"
+                sh "rm -rf ${params.APP_DIRECTORY} | exit 0"
             }
         }
         stage("git clone") {
@@ -28,7 +28,7 @@ pipeline {
         }
         stage("docker build") {
             steps {
-                sh "${params.DOCKER_CMDPREFIX} docker build -t ${params.DOCKER_IMAGE_NAME}:latest ${params.JENKINSCI_DIRECTORY}/docker/"
+                sh "${params.DOCKER_CMDPREFIX} docker build -t ${params.DOCKER_IMAGE_NAME}:latest ${params.APP_DIRECTORY}/docker/"
             }
         }
         stage("docker tag") {
