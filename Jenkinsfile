@@ -13,6 +13,7 @@ pipeline {
     }
 
     parameters {
+        string(name: "APP_NAME",            description: "APP_NAME",            defaultValue: "jenkinsci")
         string(name: "DOCKER_HUB_USER",     description: "DOCKER_HUB_USER",     defaultValue: "marioluan")
         string(name: "DOCKER_HUB_PASSWORD", description: "DOCKER_HUB_PASSWORD")
         string(name: "DOCKER_IMAGE_NAME",   description: "DOCKER_IMAGE_NAME",   defaultValue: "marioluan/jenkinsci-2.6.3-alpine")
@@ -21,6 +22,11 @@ pipeline {
     }
 
     stages {
+        stage("clean up") {
+            staps {
+                deleteDir()
+            }
+        }
         stage("git clone") {
             steps {
                 git(url: 'https://github.com/marioluan/jenkinsci.git', branch: 'master', changelog: true)
@@ -46,12 +52,16 @@ pipeline {
                 sh "${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:latest && ${params.DOCKER_CMD_PREFIX} docker push ${params.DOCKER_IMAGE_NAME}:${params.DOCKER_IMAGE_TAG}"
             }
         }
-    }
-
-    post {
-        always {
-            echo "cleaning up"
-            deleteDir()
+        stage("before-deploy") {
+            steps {
+                sh "ssh -i ~/.ssh/terraform centos@172-31-74-91 rm docker-stack.yml"
+                sh "ssh -i ~/.ssh/terraform centos@172-31-74-91 curl -o docker-stack.yml https://raw.githubusercontent.com/marioluan/jenkinsci/master/docker/docker-stack.yml"
+            }
+        }
+        stage("deploy") {
+            steps {
+                sh "ssh -i ~/.ssh/terraform centos@172-31-74-91 docker stack -c docker-stack.yml deploy ${params.APP_NAME}"
+            }
         }
     }
 }
