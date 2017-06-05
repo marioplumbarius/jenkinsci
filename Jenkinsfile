@@ -68,7 +68,7 @@ pipeline {
         }
         stage("deploy") {
             steps {
-                sh "ssh -i ~/.ssh/terraform centos@${params.APP_PRIVATE_IP} docker stack -c docker-stack.yml deploy ${params.APP_NAME}"
+                sh "ssh -i ~/.ssh/terraform centos@${params.APP_PRIVATE_IP} docker stack deploy -c docker-stack.yml ${params.APP_NAME}"
             }
         }
     }
